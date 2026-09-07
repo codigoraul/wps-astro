@@ -3,6 +3,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://wps.cl',
+  base: '/prueba/',
   integrations: [sitemap()],
   build: { inlineStylesheets: 'auto' },
   // URLs del sitio WordPress anterior -> nuevas rutas (SEO)
