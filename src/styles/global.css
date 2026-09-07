@@ -140,7 +140,7 @@ p:last-child { margin-bottom: 0; }
 
 /* Page hero (interior pages) */
 .page-hero {
-  background: var(--navy-900) url('/images/slider/slide-3.jpg') center / cover no-repeat; background-blend-mode: normal; color: var(--white);
+  background: var(--navy-900) var(--page-hero-bg) center / cover no-repeat; background-blend-mode: normal; color: var(--white);
   padding: calc(var(--header-total) + clamp(2.5rem, 5vw, 4rem)) 0 clamp(2.5rem, 5vw, 4rem);
   position: relative; overflow: hidden;
 }

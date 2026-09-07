@@ -4,6 +4,7 @@ import PageHero from '@/components/PageHero.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Icon from '@/components/Icon.astro';
 import { getServices } from '@/lib/cms';
+import { withBase } from '@/lib/paths';
 
 export async function getStaticPaths() {
   const services = await getServices();
@@ -18,19 +19,19 @@ const others = services.filter((s) => s.slug !== service.slug);
   <section class="section">
     <div class="container detail">
       <article class="prose" data-reveal>
-        <figure class="hero-img"><img src={service.image} alt={service.title} width="1200" height="700" /></figure>
+        <figure class="hero-img"><img src={withBase(service.image)} alt={service.title} width="1200" height="700" /></figure>
         <span class="eyebrow">Descripción del servicio</span>
         {service.description.map((p) => <p>{p}</p>)}
         <h3>Qué incluye</h3>
         <ul class="features">
           {service.features.map((f) => <li><Icon name="check" />{f}</li>)}
         </ul>
-        <a href="/contacto/" class="btn btn--primary">Cotizar este servicio <Icon name="arrow" /></a>
+        <a href={withBase('/contacto/')} class="btn btn--primary">Cotizar este servicio <Icon name="arrow" /></a>
         {service.gallery.length > 1 && (
           <div class="gallery">
             <h3>En terreno</h3>
             <div class="gallery__grid">
-              {service.gallery.map((g, i) => <a href={g} target="_blank" rel="noopener"><img src={g} alt={`${service.title} – foto ${i + 1}`} loading="lazy" width="600" height="600" /></a>)}
+              {service.gallery.map((g, i) => <a href={withBase(g)} target="_blank" rel="noopener"><img src={withBase(g)} alt={`${service.title} – foto ${i + 1}`} loading="lazy" width="600" height="600" /></a>)}
             </div>
           </div>
         )}
@@ -39,13 +40,13 @@ const others = services.filter((s) => s.slug !== service.slug);
         <div class="sidebar__box">
           <h4>Otros servicios</h4>
           <ul>
-            {others.map((o) => <li><a href={`/servicios/${o.slug}/`}><Icon name={o.icon} />{o.shortTitle ?? o.title}</a></li>)}
+            {others.map((o) => <li><a href={withBase(`/servicios/${o.slug}/`)}><Icon name={o.icon} />{o.shortTitle ?? o.title}</a></li>)}
           </ul>
         </div>
         <div class="sidebar__box sidebar__box--dark">
           <h4>¿Necesita una cotización?</h4>
           <p>Cuéntenos el alcance de su proyecto y le respondemos en menos de 24 horas hábiles.</p>
-          <a href="/contacto/" class="btn btn--primary">Contactar</a>
+          <a href={withBase('/contacto/')} class="btn btn--primary">Contactar</a>
         </div>
       </aside>
     </div>

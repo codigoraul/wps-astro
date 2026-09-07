@@ -4,6 +4,7 @@ import PageHero from '@/components/PageHero.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Icon from '@/components/Icon.astro';
 import { getProjects } from '@/lib/cms';
+import { withBase } from '@/lib/paths';
 const projects = await getProjects();
 ---
 <Layout title="Proyectos" description="Proyectos de pipelines, estaciones de bombeo y estanques ejecutados por WPS en Chile y Perú para minería y energía.">
@@ -13,7 +14,7 @@ const projects = await getProjects();
       <div class="grid grid--3">
         {projects.map((p) => (
           <article class="card project" data-reveal>
-            <div class="project__visual"><img src={p.image} alt={p.title} width="640" height="400" loading="lazy" /><span>{p.category}</span></div>
+            <div class="project__visual"><img src={withBase(p.image)} alt={p.title} width="640" height="400" loading="lazy" /><span>{p.category}</span></div>
             <h3>{p.title}</h3>
             <p class="project__meta"><Icon name="pin" />{p.location}</p>
             <p>{p.summary}</p>

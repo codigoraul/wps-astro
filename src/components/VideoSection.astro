@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { videos } from '@/data/videos';
+import { withBase } from '@/lib/paths';
 ---
 <section class="section section--alt videos" id="videos">
   <div class="container">
@@ -15,12 +16,12 @@ import { videos } from '@/data/videos';
           class="vcard"
           data-reveal
           data-type={v.type}
-          data-src={v.src}
+          data-src={v.type === 'file' ? withBase(v.src) : v.src}
           data-title={v.title}
           aria-label={`Reproducir: ${v.title}`}
         >
           <span class="vcard__media">
-            <img src={v.poster} alt="" width="1280" height="720" loading="lazy" />
+            <img src={withBase(v.poster)} alt="" width="1280" height="720" loading="lazy" />
             <span class="vcard__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
           </span>
           <span class="vcard__body">

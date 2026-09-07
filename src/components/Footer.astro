@@ -1,6 +1,7 @@
 ---
 import { site } from '@/data/site';
 import { getServices } from '@/lib/cms';
+import { withBase } from '@/lib/paths';
 import Icon from './Icon.astro';
 const services = await getServices();
 const year = new Date().getFullYear();
@@ -8,19 +9,19 @@ const year = new Date().getFullYear();
 <footer class="footer">
   <div class="container footer__grid">
     <div class="footer__brand">
-      <img src="/images/logo-wps-white.svg" alt="WPS Welding & Pipelines" width="447" height="199" class="footer__logo" />
+      <img src={withBase('/images/logo-wps-white.svg')} alt="WPS Welding & Pipelines" width="447" height="199" class="footer__logo" />
       <p>Montaje industrial de pipelines, piping y estaciones de bombeo para minería y energía. Más de 25 años de trayectoria en Chile y Perú.</p>
     </div>
     <div>
       <h4>Servicios</h4>
       <ul>
-        {services.map((s) => <li><a href={`/servicios/${s.slug}/`}>{s.shortTitle ?? s.title}</a></li>)}
+        {services.map((s) => <li><a href={withBase(`/servicios/${s.slug}/`)}>{s.shortTitle ?? s.title}</a></li>)}
       </ul>
     </div>
     <div>
       <h4>Empresa</h4>
       <ul>
-        {site.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        {site.nav.map((n) => <li><a href={withBase(n.href)}>{n.label}</a></li>)}
       </ul>
     </div>
     <div>

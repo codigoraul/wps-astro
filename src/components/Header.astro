@@ -1,8 +1,12 @@
 ---
 import { site } from '@/data/site';
 import Icon from './Icon.astro';
+import { withBase } from '@/lib/paths';
 const path = Astro.url.pathname;
-const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const isActive = (href: string) => {
+  const full = withBase(href);
+  return href === '/' ? path === full : path.startsWith(full);
+};
 ---
 <header class="header" id="header">
   <div class="topbar">
@@ -20,16 +24,16 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     </div>
   </div>
   <div class="container header__inner">
-    <a href="/" class="header__logo" aria-label="WPS Welding & Pipelines – Inicio">
-      <img src="/images/logo-wps.svg" alt="WPS Welding & Pipelines" width="447" height="199" />
+    <a href={withBase('/')} class="header__logo" aria-label="WPS Welding & Pipelines – Inicio">
+      <img src={withBase('/images/logo-wps.svg')} alt="WPS Welding & Pipelines" width="447" height="199" />
     </a>
     <nav class="header__nav" id="nav" aria-label="Principal">
       <ul>
         {site.nav.map((item) => (
-          <li><a href={item.href} class:list={{ active: isActive(item.href) }}>{item.label}</a></li>
+          <li><a href={withBase(item.href)} class:list={{ active: isActive(item.href) }}>{item.label}</a></li>
         ))}
       </ul>
-      <a href="/contacto/" class="btn btn--primary header__cta">Cotizar proyecto</a>
+      <a href={withBase('/contacto/')} class="btn btn--primary header__cta">Cotizar proyecto</a>
     </nav>
     <button class="header__toggle" id="navToggle" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú">
       <Icon name="menu" class="i-menu" /><Icon name="close" class="i-close" />

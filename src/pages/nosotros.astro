@@ -5,6 +5,7 @@ import CtaBand from '@/components/CtaBand.astro';
 import Icon from '@/components/Icon.astro';
 import { site } from '@/data/site';
 import { getTeam } from '@/lib/cms';
+import { withBase } from '@/lib/paths';
 const team = await getTeam();
 const pillars = [
   { t: 'Calidad y seguridad', d: 'Entregamos servicios de ingeniería y construcción de calidad, con altos estándares de seguridad y protección al medio ambiente.' },
@@ -27,7 +28,7 @@ const pillars = [
         <p><strong>Nuestro enfoque</strong> es brindar servicios de construcción integrales de procesos de ingeniería y construcción de pipelines y obras hidráulicas en los sectores de minería y energía.</p>
       </div>
       <div class="intro__media" data-reveal>
-        <img src="/images/casco-wps.jpg" alt="Equipo WPS en terreno" width="800" height="1000" loading="lazy" class="intro__img" />
+        <img src={withBase('/images/casco-wps.jpg')} alt="Equipo WPS en terreno" width="800" height="1000" loading="lazy" class="intro__img" />
         <div class="intro__badge"><strong>25+</strong><span>años de experiencia</span></div>
       </div>
     </div>

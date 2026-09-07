@@ -4,6 +4,7 @@ import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import Icon from '@/components/Icon.astro';
 import { site } from '@/data/site';
+import { withBase } from '@/lib/paths';
 
 interface Props { title: string; description?: string; ogImage?: string; }
 const { title, description = site.description, ogImage = '/images/logo-wps.jpg' } = Astro.props;
@@ -21,10 +22,10 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, site.url).href} />
+    <meta property="og:image" content={new URL(withBase(ogImage), site.url).href} />
     <meta property="og:locale" content="es_CL" />
     <meta name="theme-color" content="#0a1a3a" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -33,7 +34,7 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
       '@type': 'Organization',
       name: site.legalName,
       url: site.url,
-      logo: new URL('/images/logo-wps.jpg', site.url).href,
+      logo: new URL(withBase('/images/logo-wps.jpg'), site.url).href,
       email: site.email,
       telephone: site.phones[0],
       address: { '@type': 'PostalAddress', streetAddress: 'Francia 1508', addressLocality: 'Lampa', addressRegion: 'Región Metropolitana', addressCountry: 'CL' },

@@ -1,18 +1,19 @@
 ---
 import Icon from './Icon.astro';
 import type { Service } from '@/data/services';
+import { withBase } from '@/lib/paths';
 interface Props { service: Service; }
 const { service } = Astro.props;
 ---
 <article class="card card--media" data-reveal>
-  <a href={`/servicios/${service.slug}/`} class="card__media" aria-hidden="true" tabindex="-1">
-    <img src={service.image} alt="" width="640" height="420" loading="lazy" />
+  <a href={withBase(`/servicios/${service.slug}/`)} class="card__media" aria-hidden="true" tabindex="-1">
+    <img src={withBase(service.image)} alt="" width="640" height="420" loading="lazy" />
   </a>
   <div class="card__body">
     <span class="card__icon"><Icon name={service.icon} /></span>
-    <h3><a href={`/servicios/${service.slug}/`}>{service.shortTitle ?? service.title}</a></h3>
+    <h3><a href={withBase(`/servicios/${service.slug}/`)}>{service.shortTitle ?? service.title}</a></h3>
     <p>{service.excerpt}</p>
-    <a href={`/servicios/${service.slug}/`} class="card__link">Ver servicio <Icon name="arrow" class="arrow" /></a>
+    <a href={withBase(`/servicios/${service.slug}/`)} class="card__link">Ver servicio <Icon name="arrow" class="arrow" /></a>
   </div>
 </article>
 <style>

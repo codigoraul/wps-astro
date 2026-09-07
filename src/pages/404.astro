@@ -1,14 +1,16 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import Icon from '@/components/Icon.astro';
+import { withBase } from '@/lib/paths';
+const pageHeroBg = `url('${withBase('/images/slider/slide-3.jpg')}')`;
 ---
 <Layout title="Página no encontrada">
-  <section class="page-hero nf">
+  <section class="page-hero nf" style={{ '--page-hero-bg': pageHeroBg }}>
     <div class="container">
       <span class="eyebrow">Error 404</span>
       <h1>Página no encontrada</h1>
       <p class="lead">La página que busca no existe o fue movida.</p>
-      <a href="/" class="btn btn--primary">Volver al inicio <Icon name="arrow" /></a>
+      <a href={withBase('/')} class="btn btn--primary">Volver al inicio <Icon name="arrow" /></a>
     </div>
   </section>
 </Layout>

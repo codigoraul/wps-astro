@@ -8,6 +8,7 @@ import VideoSection from '@/components/VideoSection.astro';
 import FleetGallery from '@/components/FleetGallery.astro';
 import { site } from '@/data/site';
 import { getFeaturedServices, getServices } from '@/lib/cms';
+import { withBase } from '@/lib/paths';
 const featured = await getFeaturedServices(3);
 const all = await getServices();
 const why = [
@@ -38,13 +39,13 @@ const why = [
           <span class="eyebrow">Nuestros servicios</span>
           <h2>Soluciones integrales para el transporte de fluidos</h2>
         </div>
-        <a href="/servicios/" class="btn btn--outline">Todos los servicios <Icon name="arrow" /></a>
+        <a href={withBase('/servicios/')} class="btn btn--outline">Todos los servicios <Icon name="arrow" /></a>
       </div>
       <div class="grid grid--3">
         {featured.map((s) => <ServiceCard service={s} />)}
       </div>
       <ul class="chips" data-reveal>
-        {all.filter((s) => !featured.includes(s)).map((s) => <li><a href={`/servicios/${s.slug}/`}>{s.shortTitle ?? s.title}</a></li>)}
+        {all.filter((s) => !featured.includes(s)).map((s) => <li><a href={withBase(`/servicios/${s.slug}/`)}>{s.shortTitle ?? s.title}</a></li>)}
       </ul>
     </div>
   </section>
@@ -53,7 +54,7 @@ const why = [
   <section class="section about">
     <div class="container grid grid--2 about__grid">
       <div class="about__visual" data-reveal>
-        <img src="/images/servicios/piping-1.jpg" alt="Montaje de piping en terreno" width="800" height="900" loading="lazy" class="about__img" />
+        <img src={withBase('/images/servicios/piping-1.jpg')} alt="Montaje de piping en terreno" width="800" height="900" loading="lazy" class="about__img" />
         <div class="about__badge"><strong>25+</strong><span>años de experiencia</span></div>
         <div class="about__panel">
           <span>Industrias</span>
@@ -65,7 +66,7 @@ const why = [
         <h2>Profesionales reconocidos en construcción de pipelines y estaciones</h2>
         <p class="lead">Somos una asociación de profesionales con más de 25 años de trayectoria en ingeniería, construcción, calidad, inspecciones, ensayos y puesta en marcha para la minería y la energía, en Chile y el extranjero.</p>
         <p>Nuestro enfoque es brindar servicios de construcción integrales de pipelines y obras hidráulicas: plantas concentradoras, plantas desaladoras, depósitos de relaves, estaciones booster y obras hidráulicas para turbinas.</p>
-        <a href="/nosotros/" class="btn btn--primary">Conocer WPS <Icon name="arrow" /></a>
+        <a href={withBase('/nosotros/')} class="btn btn--primary">Conocer WPS <Icon name="arrow" /></a>
       </div>
     </div>
   </section>

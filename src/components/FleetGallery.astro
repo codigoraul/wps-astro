@@ -1,4 +1,5 @@
 ---
+import { withBase } from '@/lib/paths';
 const photos = [
   { src: '/images/flota/flota-1.jpg', alt: 'Equipo WPS en faena de pipeline' },
   { src: '/images/flota/flota-4.jpg', alt: 'Camión equipado WPS' },
@@ -19,7 +20,7 @@ const photos = [
     <div class="fleet__grid">
       {photos.map((p, i) => (
         <figure class:list={['fleet__item', { 'fleet__item--tall': i === 0 }]} data-reveal>
-          <img src={p.src} alt={p.alt} loading="lazy" width="1600" height="900" />
+          <img src={withBase(p.src)} alt={p.alt} loading="lazy" width="1600" height="900" />
         </figure>
       ))}
     </div>
