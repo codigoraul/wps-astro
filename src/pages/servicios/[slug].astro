@@ -1,0 +1,81 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { getServices } from '@/lib/cms';
+
+export async function getStaticPaths() {
+  const services = await getServices();
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service, services } }));
+}
+const { service, services } = Astro.props;
+const others = services.filter((s) => s.slug !== service.slug);
+---
+<Layout title={service.title} description={service.excerpt}>
+  <PageHero title={service.title} lead={service.excerpt} crumbs={[{ label: 'Servicios', href: '/servicios/' }, { label: service.shortTitle ?? service.title }]} />
+
+  <section class="section">
+    <div class="container detail">
+      <article class="prose" data-reveal>
+        <figure class="hero-img"><img src={service.image} alt={service.title} width="1200" height="700" /></figure>
+        <span class="eyebrow">Descripción del servicio</span>
+        {service.description.map((p) => <p>{p}</p>)}
+        <h3>Qué incluye</h3>
+        <ul class="features">
+          {service.features.map((f) => <li><Icon name="check" />{f}</li>)}
+        </ul>
+        <a href="/contacto/" class="btn btn--primary">Cotizar este servicio <Icon name="arrow" /></a>
+        {service.gallery.length > 1 && (
+          <div class="gallery">
+            <h3>En terreno</h3>
+            <div class="gallery__grid">
+              {service.gallery.map((g, i) => <a href={g} target="_blank" rel="noopener"><img src={g} alt={`${service.title} – foto ${i + 1}`} loading="lazy" width="600" height="600" /></a>)}
+            </div>
+          </div>
+        )}
+      </article>
+      <aside class="sidebar" data-reveal>
+        <div class="sidebar__box">
+          <h4>Otros servicios</h4>
+          <ul>
+            {others.map((o) => <li><a href={`/servicios/${o.slug}/`}><Icon name={o.icon} />{o.shortTitle ?? o.title}</a></li>)}
+          </ul>
+        </div>
+        <div class="sidebar__box sidebar__box--dark">
+          <h4>¿Necesita una cotización?</h4>
+          <p>Cuéntenos el alcance de su proyecto y le respondemos en menos de 24 horas hábiles.</p>
+          <a href="/contacto/" class="btn btn--primary">Contactar</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <CtaBand />
+</Layout>
+
+<style>
+  .hero-img { margin: 0 0 2.5rem; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16 / 9; }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+  .gallery { margin-top: 3rem; }
+  .gallery__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .75rem; }
+  .gallery__grid a { display: block; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius); background: var(--navy-900); }
+  .gallery__grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+  .gallery__grid a:hover img { transform: scale(1.08); }
+  .detail { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 4rem; align-items: start; }
+  .prose h3 { margin-top: 2.5rem; }
+  .features { list-style: none; padding: 0; margin: 0 0 2.5rem; display: grid; gap: .75rem; }
+  .features li { display: flex; gap: .75rem; align-items: flex-start; padding: .9rem 1rem; background: var(--steel-100); border-left: 3px solid var(--orange-500); }
+  .features :global(svg) { width: 1.2rem; height: 1.2rem; color: var(--orange-500); flex: none; margin-top: .2rem; }
+  .sidebar { display: grid; gap: 1.5rem; position: sticky; top: calc(var(--header-total) + 1.5rem); }
+  .sidebar__box { border: 1px solid var(--steel-300); border-radius: var(--radius); padding: 1.75rem; }
+  .sidebar__box h4 { font-size: 1.2rem; letter-spacing: .1em; margin-bottom: 1rem; }
+  .sidebar__box ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .25rem; }
+  .sidebar__box li a { display: flex; gap: .75rem; align-items: center; padding: .6rem .5rem; border-radius: var(--radius); color: var(--steel-700); font-weight: 500; transition: all .2s; }
+  .sidebar__box li a:hover { background: var(--navy-100); color: var(--navy-900); }
+  .sidebar__box li :global(svg) { width: 1.2rem; height: 1.2rem; color: var(--orange-500); flex: none; }
+  .sidebar__box--dark { background: var(--navy-900); color: #fff; border: 0; }
+  .sidebar__box--dark h4 { color: #fff; }
+  .sidebar__box--dark p { color: rgba(255,255,255,.75); margin-bottom: 1.25rem; }
+  @media (max-width: 900px) { .detail { grid-template-columns: 1fr; } .sidebar { position: static; } }
+</style>

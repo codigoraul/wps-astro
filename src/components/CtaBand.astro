@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+import { site } from '@/data/site';
+interface Props { title?: string; text?: string; }
+const {
+  title = 'Mejores soluciones a sus proyectos industriales',
+  text = 'Conversemos sobre su próximo pipeline, estación de bombeo o estanque. Respondemos en menos de 24 horas hábiles.',
+} = Astro.props;
+---
+<section class="cta">
+  <div class="container cta__inner" data-reveal>
+    <div>
+      <span class="eyebrow">Cotice con WPS</span>
+      <h2>{title}</h2>
+      <p class="lead">{text}</p>
+    </div>
+    <div class="cta__actions">
+      <a href="/contacto/" class="btn btn--primary">Contactar <Icon name="arrow" /></a>
+      <a href={`tel:${site.phones[0].replace(/\s/g, '')}`} class="btn btn--outline"><Icon name="phone" /> {site.phones[0]}</a>
+    </div>
+  </div>
+</section>
+<style>
+  .cta { background: var(--navy-900) url('/images/bg-inicio.jpg') center / cover no-repeat; background-attachment: fixed; color: #fff; padding-block: clamp(4rem, 8vw, 6.5rem); position: relative; overflow: hidden; }
+  .cta::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,13,31,.85) 0%, rgba(5,13,31,.55) 100%); pointer-events: none; }
+  @media (max-width: 900px) { .cta { background-attachment: scroll; } }
+  .cta__inner { display: flex; align-items: center; justify-content: space-between; gap: 2.5rem; flex-wrap: wrap; position: relative; }
+  .cta h2, .cta h3 { color: #fff; }
+  .cta .lead { color: rgba(255,255,255,.75); }
+  .cta .eyebrow { color: var(--orange-400); }
+  .cta__actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .cta .btn--outline { color: #fff; }
+  .cta .btn--outline:hover { background: #fff; color: var(--navy-900); }
+</style>

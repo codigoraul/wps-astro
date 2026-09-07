@@ -1,0 +1,19 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { getServices } from '@/lib/cms';
+const services = await getServices();
+---
+<Layout title="Servicios" description="Soldadura de pipelines, piping y estaciones de bombeo, pruebas hidrostáticas, revestimientos, estanques y piezas especiales. Servicios de montaje industrial WPS.">
+  <PageHero title="Servicios" lead="Servicios de construcción integrales para pipelines, piping y obras hidráulicas en minería y energía." crumbs={[{ label: 'Servicios' }]} />
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--3">
+        {services.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+  <CtaBand />
+</Layout>

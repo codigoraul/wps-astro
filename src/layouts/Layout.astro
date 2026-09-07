@@ -1,0 +1,69 @@
+---
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Icon from '@/components/Icon.astro';
+import { site } from '@/data/site';
+
+interface Props { title: string; description?: string; ogImage?: string; }
+const { title, description = site.description, ogImage = '/images/logo-wps.jpg' } = Astro.props;
+const fullTitle = title === 'Inicio' ? `${site.legalName} · Montaje Industrial` : `${title} · ${site.name}`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+---
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, site.url).href} />
+    <meta property="og:locale" content="es_CL" />
+    <meta name="theme-color" content="#0a1a3a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: site.legalName,
+      url: site.url,
+      logo: new URL('/images/logo-wps.jpg', site.url).href,
+      email: site.email,
+      telephone: site.phones[0],
+      address: { '@type': 'PostalAddress', streetAddress: 'Francia 1508', addressLocality: 'Lampa', addressRegion: 'Región Metropolitana', addressCountry: 'CL' },
+    })} />
+  </head>
+  <body>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <a href={`https://wa.me/${site.whatsapp}`} class="wa-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+      <Icon name="whatsapp" />
+    </a>
+    <script>
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      }, { threshold: 0.15 });
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .wa-float {
+    position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 90;
+    width: 56px; height: 56px; border-radius: 50%; background: #25d366; color: #fff;
+    display: grid; place-items: center; box-shadow: var(--shadow-md);
+    transition: transform .3s var(--ease);
+  }
+  .wa-float:hover { transform: scale(1.08); }
+  .wa-float :global(svg) { width: 28px; height: 28px; }
+</style>

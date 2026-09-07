@@ -1,0 +1,109 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { site } from '@/data/site';
+import { getTeam } from '@/lib/cms';
+const team = await getTeam();
+const pillars = [
+  { t: 'Calidad y seguridad', d: 'Entregamos servicios de ingeniería y construcción de calidad, con altos estándares de seguridad y protección al medio ambiente.' },
+  { t: 'Confiabilidad', d: 'Ofrecemos confiabilidad y solución a las necesidades de nuestros clientes en montaje industrial, basados en la vasta experiencia de nuestros ejecutivos.' },
+  { t: 'Tecnología de vanguardia', d: 'Sustentados por tecnología Lincoln Electric para soldadura en terreno y taller.' },
+  { t: 'Colaboración', d: 'Nos relacionamos de forma colaborativa con nuestros clientes, proveedores y la comunidad.' },
+];
+---
+<Layout title="Nosotros" description="WPS: asociación de profesionales con más de 25 años en construcción de pipelines, estaciones de bombeo y obras hidráulicas para minería y energía en Chile y Perú.">
+  <PageHero title="Nosotros" lead="Profesionales altamente reconocidos en la construcción de sistemas de tuberías, pipelines y estaciones, en Chile y el extranjero." crumbs={[{ label: 'Nosotros' }]} />
+
+  <section class="section">
+    <div class="container grid grid--2 intro">
+      <div class="prose" data-reveal>
+        <span class="eyebrow">Quiénes somos</span>
+        <h2>Más de 25 años construyendo la infraestructura de la minería y la energía</h2>
+        <p>Somos una asociación de profesionales altamente reconocidos en el rubro de construcción de sistemas de tuberías de pipeline y estaciones, tanto en Chile como en el extranjero, con una trayectoria de más de 25 años en las áreas de ingeniería, construcción, calidad, inspecciones, ensayos y puesta en marcha asociados a la industria de la minería y la energía.</p>
+        <p>Hemos participado en plantas concentradoras, plantas desaladoras, depósitos de relaves, estaciones de ciclones, estaciones booster y obras hidráulicas para turbinas.</p>
+        <p>La vasta experiencia de los fundadores de WPS está construida y reconocida en empresas como {site.trajectory.join(', ')}, en zonas remotas con condiciones climáticas complejas de los principales proyectos de Chile y Perú.</p>
+        <p><strong>Nuestro enfoque</strong> es brindar servicios de construcción integrales de procesos de ingeniería y construcción de pipelines y obras hidráulicas en los sectores de minería y energía.</p>
+      </div>
+      <div class="intro__media" data-reveal>
+        <img src="/images/casco-wps.jpg" alt="Equipo WPS en terreno" width="800" height="1000" loading="lazy" class="intro__img" />
+        <div class="intro__badge"><strong>25+</strong><span>años de experiencia</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div data-reveal>
+        <span class="eyebrow">Por qué elegir WPS</span>
+        <h2>Cuatro pilares de nuestro trabajo</h2>
+      </div>
+      <div class="grid grid--4 pillars">
+        {pillars.map((p, i) => (
+          <div class="card" data-reveal>
+            <span class="pillars__n">0{i + 1}</span>
+            <h3>{p.t}</h3>
+            <p>{p.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div data-reveal>
+        <span class="eyebrow">Directorio WPS</span>
+        <h2>Equipo directivo</h2>
+        <p class="lead">Ejecutivos y asesores con décadas de experiencia en pipelines, soldadura, calidad, ingeniería y operaciones.</p>
+      </div>
+      <ul class="team grid grid--3">
+        {team.map((m) => (
+          <li class="team__member" data-reveal>
+            <span class="team__avatar" aria-hidden="true">{m.name.split(' ').slice(0, 2).map((n) => n[0]).join('')}</span>
+            <div>
+              <strong>{m.name}</strong>
+              <span>{m.role}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container grid grid--2" data-reveal>
+      <div>
+        <span class="eyebrow">Industrias</span>
+        <h2>Dónde trabajamos</h2>
+      </div>
+      <ul class="industries">
+        {site.industries.map((i) => <li><Icon name="check" />{i}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title="¿Conversamos sobre su proyecto?" />
+</Layout>
+
+<style>
+  .intro { align-items: start; }
+  .intro .prose h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); }
+  .intro__media { position: relative; }
+  .intro__img { border-radius: var(--radius); width: 100%; height: 100%; min-height: 420px; object-fit: cover; }
+  .intro__badge { position: absolute; left: -1rem; bottom: 2rem; background: var(--orange-500); color: #fff; padding: 1rem 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-md); }
+  .intro__badge strong { display: block; font-family: var(--font-display); font-size: 3rem; line-height: .9; }
+  .intro__badge span { text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; }
+  @media (max-width: 900px) { .intro__badge { left: 1rem; } }
+  .pillars { margin-top: 2.5rem; }
+  .pillars__n { font-family: var(--font-display); font-size: 2.5rem; color: var(--orange-500); line-height: 1; display: block; margin-bottom: .75rem; }
+  .team { list-style: none; padding: 0; margin: 2.5rem 0 0; }
+  .team__member { display: flex; gap: 1.25rem; align-items: center; padding: 1.5rem; border: 1px solid var(--steel-300); border-radius: var(--radius); background: #fff; }
+  .team__avatar { flex: none; width: 64px; height: 64px; border-radius: 50%; background: var(--navy-900); color: var(--orange-400); display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; }
+  .team__member strong { display: block; color: var(--navy-900); font-size: 1.05rem; }
+  .team__member span:not(.team__avatar) { color: var(--fg-muted); font-size: .9rem; }
+  .industries { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 1.1rem; }
+  .industries li { display: flex; gap: .75rem; align-items: center; padding: 1rem; border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius); }
+  .industries :global(svg) { width: 1.25rem; height: 1.25rem; color: var(--orange-400); flex: none; }
+</style>

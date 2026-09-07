@@ -1,0 +1,57 @@
+---
+import { site } from '@/data/site';
+import { getServices } from '@/lib/cms';
+import Icon from './Icon.astro';
+const services = await getServices();
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <img src="/images/logo-wps-white.svg" alt="WPS Welding & Pipelines" width="447" height="199" class="footer__logo" />
+      <p>Montaje industrial de pipelines, piping y estaciones de bombeo para minería y energía. Más de 25 años de trayectoria en Chile y Perú.</p>
+    </div>
+    <div>
+      <h4>Servicios</h4>
+      <ul>
+        {services.map((s) => <li><a href={`/servicios/${s.slug}/`}>{s.shortTitle ?? s.title}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <h4>Empresa</h4>
+      <ul>
+        {site.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul class="footer__contact">
+        <li><Icon name="pin" /><a href={site.mapsUrl} target="_blank" rel="noopener">{site.address}</a></li>
+        <li><Icon name="mail" /><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        {site.phones.map((p) => <li><Icon name="phone" /><a href={`tel:${p.replace(/\s/g, '')}`}>{p}</a></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <div class="container">
+      <span>© {year} {site.legalName}. Todos los derechos reservados.</span>
+      <span>Diseño web: <a href="https://diseñopaginas.cl" target="_blank" rel="noopener">diseñopaginas.cl</a></span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--navy-950); color: rgba(255,255,255,.7); font-size: .95rem; }
+  .footer__grid { display: grid; gap: 2.5rem; padding-block: 4.5rem 3rem; grid-template-columns: 1.6fr 1fr 1fr 1.3fr; }
+  .footer__logo { width: 88px; height: auto; margin-bottom: 1.25rem; }
+  .footer__brand p { max-width: 36ch; margin-bottom: 0; }
+  .footer h4 { color: #fff; font-size: 1.15rem; letter-spacing: .12em; margin-bottom: 1.25rem; }
+  .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+  .footer a:hover { color: var(--orange-400); }
+  .footer__contact li { display: flex; gap: .7rem; align-items: flex-start; }
+  .footer__contact :global(svg) { width: 1.2rem; height: 1.2rem; flex: none; color: var(--orange-400); margin-top: .15rem; }
+  .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-block: 1.25rem; font-size: .85rem; }
+  .footer__bottom .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+  @media (max-width: 900px) { .footer__grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,40 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { getProjects } from '@/lib/cms';
+const projects = await getProjects();
+---
+<Layout title="Proyectos" description="Proyectos de pipelines, estaciones de bombeo y estanques ejecutados por WPS en Chile y Perú para minería y energía.">
+  <PageHero title="Proyectos" lead="Experiencia en terreno en los proyectos más exigentes de la minería y la energía." crumbs={[{ label: 'Proyectos' }]} />
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--3">
+        {projects.map((p) => (
+          <article class="card project" data-reveal>
+            <div class="project__visual"><img src={p.image} alt={p.title} width="640" height="400" loading="lazy" /><span>{p.category}</span></div>
+            <h3>{p.title}</h3>
+            <p class="project__meta"><Icon name="pin" />{p.location}</p>
+            <p>{p.summary}</p>
+            <ul class="project__scope">{p.scope.map((s) => <li>{s}</li>)}</ul>
+            <p class="project__client">{p.client}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+  <CtaBand title="Su proyecto puede ser el siguiente" />
+</Layout>
+<style>
+  .project { padding: 0; display: flex; flex-direction: column; }
+  .project > * { padding-inline: 1.75rem; }
+  .project__visual { padding: 0 !important; height: 220px; position: relative; overflow: hidden; background: var(--navy-900); background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.04) 0 2px, transparent 2px 22px), radial-gradient(circle at 80% 30%, rgba(255,77,0,.4), transparent 55%); display: flex; align-items: flex-end; margin-bottom: 1.5rem; }
+  .project__visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .project__visual span { position: relative; margin: 1rem 1.75rem; background: var(--orange-500); color: #fff; padding: .3rem .75rem; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .1em; font-size: .8rem; border-radius: var(--radius); }
+  .project__meta { display: flex; gap: .4rem; align-items: center; font-size: .85rem; color: var(--fg-muted); }
+  .project__meta :global(svg) { width: 1rem; height: 1rem; color: var(--orange-500); }
+  .project__scope { list-style: none; margin: .5rem 0 1rem; padding-inline: 1.75rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+  .project__scope li { font-size: .78rem; background: var(--steel-100); padding: .25rem .6rem; border-radius: 999px; color: var(--steel-700); }
+  .project__client { font-size: .85rem; color: var(--fg-muted); padding-bottom: 1.75rem; margin-top: auto; }
+</style>

@@ -1,0 +1,41 @@
+---
+const photos = [
+  { src: '/images/flota/flota-1.jpg', alt: 'Equipo WPS en faena de pipeline' },
+  { src: '/images/flota/flota-4.jpg', alt: 'Camión equipado WPS' },
+  { src: '/images/flota/flota-5.jpg', alt: 'Equipamiento de soldadura montado en camión' },
+  { src: '/images/flota/flota-2.jpg', alt: 'Flota de camiones WPS' },
+  { src: '/images/flota/flota-6.jpg', alt: 'Camión WPS con equipos de terreno' },
+];
+---
+<section class="section fleet">
+  <div class="container">
+    <div class="fleet__head" data-reveal>
+      <div>
+        <span class="eyebrow">Flota y equipamiento</span>
+        <h2>Equipos propios, listos para faena remota</h2>
+      </div>
+      <p class="lead">Camiones equipados con maquinaria de soldadura Lincoln Electric y herramientas de terreno, para operar en zonas remotas y condiciones climáticas complejas.</p>
+    </div>
+    <div class="fleet__grid">
+      {photos.map((p, i) => (
+        <figure class:list={['fleet__item', { 'fleet__item--tall': i === 0 }]} data-reveal>
+          <img src={p.src} alt={p.alt} loading="lazy" width="1600" height="900" />
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .fleet__head { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: end; margin-bottom: 2.5rem; }
+  .fleet__head h2 { margin: 0; max-width: 20ch; }
+  .fleet__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; grid-auto-rows: 200px; }
+  .fleet__item { margin: 0; overflow: hidden; border-radius: var(--radius); background: var(--navy-900); }
+  .fleet__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+  .fleet__item:hover img { transform: scale(1.06); }
+  .fleet__item--tall { grid-row: span 2; grid-column: span 2; }
+  @media (max-width: 900px) {
+    .fleet__head { grid-template-columns: 1fr; align-items: start; }
+    .fleet__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 160px; }
+  }
+</style>

@@ -1,0 +1,15 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Icon from '@/components/Icon.astro';
+---
+<Layout title="Página no encontrada">
+  <section class="page-hero nf">
+    <div class="container">
+      <span class="eyebrow">Error 404</span>
+      <h1>Página no encontrada</h1>
+      <p class="lead">La página que busca no existe o fue movida.</p>
+      <a href="/" class="btn btn--primary">Volver al inicio <Icon name="arrow" /></a>
+    </div>
+  </section>
+</Layout>
+<style>.nf { min-height: 80vh; display: flex; align-items: center; } .nf .eyebrow { color: var(--orange-400); }</style>

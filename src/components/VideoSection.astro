@@ -1,0 +1,98 @@
+---
+import Icon from './Icon.astro';
+import { videos } from '@/data/videos';
+---
+<section class="section section--alt videos" id="videos">
+  <div class="container">
+    <div class="videos__head" data-reveal>
+      <span class="eyebrow">Videos · WPS en terreno</span>
+      <h2>Videos de nuestro trabajo en obra</h2>
+      <p class="lead">Montaje, soldadura y puesta en marcha de pipelines y estaciones en faena.</p>
+    </div>
+    <div class="grid grid--2 videos__grid">
+      {videos.map((v) => (
+        <button
+          class="vcard"
+          data-reveal
+          data-type={v.type}
+          data-src={v.src}
+          data-title={v.title}
+          aria-label={`Reproducir: ${v.title}`}
+        >
+          <span class="vcard__media">
+            <img src={v.poster} alt="" width="1280" height="720" loading="lazy" />
+            <span class="vcard__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+          </span>
+          <span class="vcard__body">
+            <strong>{v.title}</strong>
+            <span>{v.caption}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<dialog class="vmodal" id="vmodal" aria-label="Reproductor de video">
+  <button class="vmodal__close" id="vmodalClose" aria-label="Cerrar video"><Icon name="close" /></button>
+  <div class="vmodal__stage" id="vmodalStage"></div>
+</dialog>
+
+<style>
+  .videos__head { max-width: 60ch; margin-bottom: 2.5rem; }
+  .videos__head h2 { margin-bottom: .5rem; }
+  .vcard {
+    display: block; text-align: left; padding: 0; border: 1px solid var(--steel-300);
+    background: #fff; border-radius: var(--radius); overflow: hidden; width: 100%;
+    transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s;
+  }
+  .vcard:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+  .vcard__media { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--navy-900); }
+  .vcard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+  .vcard:hover .vcard__media img { transform: scale(1.05); }
+  .vcard__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(5,13,31,.45), transparent 55%); }
+  .vcard__play {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2;
+    width: 72px; height: 72px; border-radius: 50%; background: var(--orange-500); color: #fff;
+    display: grid; place-items: center; box-shadow: 0 10px 30px -8px rgba(0,0,0,.5);
+    transition: transform .3s var(--ease), background .3s;
+  }
+  .vcard:hover .vcard__play { transform: translate(-50%, -50%) scale(1.1); background: var(--orange-600); }
+  .vcard__play svg { width: 34px; height: 34px; margin-left: 3px; }
+  .vcard__body { display: block; padding: 1.25rem 1.5rem 1.5rem; }
+  .vcard__body strong { display: block; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .04em; font-size: 1.25rem; color: var(--navy-900); }
+  .vcard__body span { color: var(--fg-muted); font-size: .95rem; }
+
+  .vmodal { border: 0; padding: 0; background: transparent; max-width: min(1100px, 92vw); width: 100%; }
+  .vmodal::backdrop { background: rgba(5,13,31,.92); }
+  .vmodal__stage { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius); overflow: hidden; }
+  .vmodal__stage :global(iframe), .vmodal__stage :global(video) { width: 100%; height: 100%; border: 0; display: block; }
+  .vmodal__close {
+    position: absolute; top: -3rem; right: 0; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,.4);
+    background: transparent; color: #fff; display: grid; place-items: center; border-radius: var(--radius);
+  }
+  .vmodal__close:hover { background: var(--orange-500); border-color: var(--orange-500); }
+  .vmodal__close :global(svg) { width: 22px; height: 22px; }
+  @media (max-width: 600px) { .vmodal__close { top: -3.25rem; } .vcard__play { width: 58px; height: 58px; } .vcard__play svg { width: 26px; height: 26px; } }
+</style>
+
+<script>
+  const modal = document.getElementById('vmodal') as HTMLDialogElement;
+  const stage = document.getElementById('vmodalStage')!;
+  const close = () => { modal.close(); stage.innerHTML = ''; };
+
+  document.querySelectorAll<HTMLButtonElement>('.vcard').forEach((card) => {
+    card.addEventListener('click', () => {
+      const { type, src, title } = card.dataset;
+      stage.innerHTML =
+        type === 'youtube'
+          ? `<iframe src="https://www.youtube-nocookie.com/embed/${src}?autoplay=1&rel=0" title="${title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
+          : `<video src="${src}" controls autoplay playsinline title="${title}"></video>`;
+      modal.showModal();
+    });
+  });
+
+  document.getElementById('vmodalClose')!.addEventListener('click', close);
+  modal.addEventListener('close', () => (stage.innerHTML = ''));
+  modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+</script>

@@ -1,0 +1,113 @@
+---
+import { site } from '@/data/site';
+import Icon from './Icon.astro';
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="header" id="header">
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <ul class="topbar__contact">
+        <li><a href={`mailto:${site.email}`}><Icon name="mail" /> {site.email}</a></li>
+        <li><a href={`tel:${site.phones[0].replace(/\s/g, '')}`}><Icon name="phone" /> {site.phones[0]}</a></li>
+        <li class="topbar__addr"><Icon name="pin" /> {site.address}</li>
+      </ul>
+      <ul class="topbar__social">
+        {site.social.filter((s) => s.url).map((s) => (
+          <li><a href={s.url} target="_blank" rel="noopener" aria-label={s.name}><Icon name={s.icon} /></a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  <div class="container header__inner">
+    <a href="/" class="header__logo" aria-label="WPS Welding & Pipelines – Inicio">
+      <img src="/images/logo-wps.svg" alt="WPS Welding & Pipelines" width="447" height="199" />
+    </a>
+    <nav class="header__nav" id="nav" aria-label="Principal">
+      <ul>
+        {site.nav.map((item) => (
+          <li><a href={item.href} class:list={{ active: isActive(item.href) }}>{item.label}</a></li>
+        ))}
+      </ul>
+      <a href="/contacto/" class="btn btn--primary header__cta">Cotizar proyecto</a>
+    </nav>
+    <button class="header__toggle" id="navToggle" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú">
+      <Icon name="menu" class="i-menu" /><Icon name="close" class="i-close" />
+    </button>
+  </div>
+</header>
+
+<style>
+  .topbar { background: #020e28; color: rgba(255,255,255,.72); font-size: .82rem; }
+  .topbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: var(--topbar-h); }
+  .topbar ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
+  .topbar__contact { gap: 1.75rem; flex-wrap: wrap; }
+  .topbar__contact li a, .topbar__contact li { display: flex; align-items: center; gap: .45rem; }
+  .topbar__contact a:hover { color: var(--orange-400); }
+  .topbar :global(svg) { width: 1rem; height: 1rem; color: var(--orange-500); flex: none; }
+  .topbar__social { gap: .35rem; }
+  .topbar__social a { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 4px; transition: background .2s, color .2s; }
+  .topbar__social a:hover { background: var(--orange-500); }
+  .topbar__social a:hover :global(svg) { color: #fff; }
+  @media (max-width: 900px) { .topbar__contact .topbar__addr { display: none; } }
+  @media (max-width: 640px) {
+    .topbar { font-size: .75rem; }
+    .topbar__contact { gap: 1rem; }
+    .topbar__inner { justify-content: center; }
+  }
+
+  .header {
+    position: fixed; inset: 0 0 auto 0; z-index: 100;
+    background: rgba(255,255,255,.97);
+    border-bottom: 1px solid transparent;
+    transition: box-shadow .3s, border-color .3s;
+  }
+  .header.is-scrolled { box-shadow: 0 8px 30px -12px rgba(5,13,31,.25); border-color: var(--steel-300); }
+  .header__inner { display: flex; align-items: center; justify-content: space-between; height: var(--header-h); gap: 2rem; }
+  .header__logo { display: flex; }
+  .header__logo img { height: 53px; width: auto; }
+  .header__nav { display: flex; align-items: center; gap: 2rem; }
+  .header__nav ul { display: flex; gap: 1.75rem; list-style: none; margin: 0; padding: 0; }
+  .header__nav a:not(.btn) {
+    font-family: var(--font-display); font-weight: 600; text-transform: uppercase;
+    letter-spacing: .1em; font-size: .95rem; color: var(--navy-900);
+    padding: .5rem 0; position: relative;
+  }
+  .header__nav a:not(.btn)::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease);
+  }
+  .header__nav a:not(.btn):hover::after, .header__nav a.active::after { transform: scaleX(1); }
+  .header__cta { padding: .7rem 1.25rem; font-size: .9rem; }
+  .header__toggle { display: none; background: none; border: 0; color: var(--navy-900); width: 44px; height: 44px; }
+  .header__toggle :global(svg) { width: 28px; height: 28px; }
+  .header__toggle :global(.i-close) { display: none; }
+  .header__toggle[aria-expanded="true"] :global(.i-menu) { display: none; }
+  .header__toggle[aria-expanded="true"] :global(.i-close) { display: block; }
+
+  @media (max-width: 900px) {
+    .header__toggle { display: grid; place-items: center; }
+    .header__nav {
+      position: fixed; inset: var(--header-total) 0 0 0; height: calc(100dvh - var(--header-total)); overflow-y: auto; background: var(--navy-900);
+      flex-direction: column; align-items: flex-start; padding: 2rem var(--gutter);
+      transform: translateX(100%); transition: transform .4s var(--ease);
+    }
+    .header__nav.is-open { transform: none; }
+    .header__nav ul { flex-direction: column; gap: .25rem; width: 100%; }
+    .header__nav a:not(.btn) { color: #fff; font-size: 1.5rem; display: block; padding: .75rem 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .header__cta { margin-top: 1rem; }
+  }
+</style>
+
+<script>
+  const header = document.getElementById('header')!;
+  const toggle = document.getElementById('navToggle')!;
+  const nav = document.getElementById('nav')!;
+  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 10);
+  onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+</script>
