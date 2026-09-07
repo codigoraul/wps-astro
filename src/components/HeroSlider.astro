@@ -10,7 +10,7 @@ import { withBase } from '@/lib/paths';
         <img class="slide__bg" src={withBase(s.image)} alt="" width="1920" height="768" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} />
         <div class="container slide__content">
           <span class="slide__eyebrow">{s.eyebrow}</span>
-          <h2 class="slide__title">{s.title}</h2>
+          {i === 0 ? <h1 class="slide__title">{s.title}</h1> : <p class="slide__title" role="heading" aria-level="2">{s.title}</p>}
           <p class="slide__text">{s.text}</p>
           <div class="slide__actions">
             <a href={withBase(s.href)} class="btn btn--primary">{s.cta} <Icon name="arrow" /></a>

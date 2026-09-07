@@ -21,7 +21,7 @@ import { withBase } from '@/lib/paths';
           aria-label={`Reproducir: ${v.title}`}
         >
           <span class="vcard__media">
-            <img src={withBase(v.poster)} alt="" width="1280" height="720" loading="lazy" />
+            <img src={withBase(v.poster)} alt={v.title} width="1280" height="720" loading="lazy" />
             <span class="vcard__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
           </span>
           <span class="vcard__body">

@@ -6,9 +6,9 @@ import Icon from '@/components/Icon.astro';
 import { site } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
-interface Props { title: string; description?: string; ogImage?: string; }
-const { title, description = site.description, ogImage = '/images/logo-wps.jpg' } = Astro.props;
-const fullTitle = title === 'Inicio' ? `${site.legalName} · Montaje Industrial` : `${title} · ${site.name}`;
+interface Props { title: string; description?: string; ogImage?: string; titleTag?: string; }
+const { title, description = site.description, ogImage = '/images/logo-wps.jpg', titleTag } = Astro.props;
+const fullTitle = titleTag ?? (title === 'Inicio' ? `${site.legalName} · Montaje Industrial` : `${title} · ${site.name}`);
 const canonical = new URL(Astro.url.pathname, site.url).href;
 ---
 <!doctype html>
@@ -31,13 +31,24 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': 'Organization',
+      '@type': ['Organization', 'GeneralContractor'],
       name: site.legalName,
+      alternateName: site.name,
       url: site.url,
       logo: new URL(withBase('/images/logo-wps.jpg'), site.url).href,
+      image: new URL(withBase('/images/logo-wps.jpg'), site.url).href,
+      description: site.description,
       email: site.email,
       telephone: site.phones[0],
       address: { '@type': 'PostalAddress', streetAddress: 'Francia 1508', addressLocality: 'Lampa', addressRegion: 'Región Metropolitana', addressCountry: 'CL' },
+      areaServed: [
+        { '@type': 'Country', name: 'Chile' },
+        { '@type': 'Country', name: 'Perú' },
+      ],
+      knowsAbout: ['Soldadura de pipelines', 'Piping industrial', 'Estaciones de bombeo', 'Pruebas hidrostáticas', 'Revestimientos de tuberías', 'Montaje de estanques', 'Minería', 'Energía'],
+      slogan: site.tagline,
+      foundingLocation: 'Chile',
+      ...(site.social.filter((s) => s.url).length > 0 ? { sameAs: site.social.filter((s) => s.url).map((s) => s.url) } : {}),
     })} />
   </head>
   <body>

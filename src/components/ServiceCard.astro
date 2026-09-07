@@ -7,7 +7,7 @@ const { service } = Astro.props;
 ---
 <article class="card card--media" data-reveal>
   <a href={withBase(`/servicios/${service.slug}/`)} class="card__media" aria-hidden="true" tabindex="-1">
-    <img src={withBase(service.image)} alt="" width="640" height="420" loading="lazy" />
+    <img src={withBase(service.image)} alt={service.title} width="640" height="420" loading="lazy" />
   </a>
   <div class="card__body">
     <span class="card__icon"><Icon name={service.icon} /></span>
