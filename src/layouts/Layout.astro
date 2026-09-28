@@ -25,7 +25,10 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
     <meta property="og:image" content={new URL(withBase(ogImage), site.url).href} />
     <meta property="og:locale" content="es_CL" />
     <meta name="theme-color" content="#0a1a3a" />
-    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={withBase('/favicon.ico')} sizes="48x48" />
+    <link rel="icon" href={withBase('/favicon-96x96.png')} type="image/png" sizes="96x96" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} sizes="180x180" />
+    <link rel="manifest" href={withBase('/site.webmanifest')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
