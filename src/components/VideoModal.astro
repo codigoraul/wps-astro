@@ -1,0 +1,46 @@
+---
+import Icon from './Icon.astro';
+---
+<dialog class="vmodal" id="vmodal" aria-label="Reproductor de video">
+  <button class="vmodal__close" id="vmodalClose" aria-label="Cerrar video"><Icon name="close" /></button>
+  <div class="vmodal__stage" id="vmodalStage"></div>
+</dialog>
+
+<style>
+  .vmodal { border: 0; padding: 0; background: transparent; max-width: min(1100px, 92vw); width: 100%; overflow: visible; }
+  .vmodal.is-portrait { width: fit-content; max-width: 92vw; }
+  .vmodal::backdrop { background: rgba(5,13,31,.94); }
+  .vmodal__stage { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius); overflow: hidden; }
+  .vmodal.is-portrait .vmodal__stage { aspect-ratio: 9 / 16; height: min(82vh, 820px); max-width: 92vw; margin-inline: auto; }
+  .vmodal__stage :global(iframe), .vmodal__stage :global(video) { width: 100%; height: 100%; border: 0; display: block; background: #000; object-fit: contain; }
+  .vmodal__close {
+    position: absolute; top: -3.25rem; right: 0; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,.4);
+    background: transparent; color: #fff; display: grid; place-items: center; border-radius: var(--radius); cursor: pointer;
+  }
+  .vmodal__close:hover { background: var(--orange-500); border-color: var(--orange-500); }
+  .vmodal__close :global(svg) { width: 22px; height: 22px; }
+  @media (max-height: 640px) { .vmodal.is-portrait .vmodal__stage { height: 78vh; } }
+</style>
+
+<script>
+  const modal = document.getElementById('vmodal') as HTMLDialogElement | null;
+  const stage = document.getElementById('vmodalStage');
+  if (modal && stage) {
+    const esc = (s = '') => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+    const close = () => { modal.close(); };
+    document.querySelectorAll<HTMLButtonElement>('[data-vplay]').forEach((card) => {
+      card.addEventListener('click', () => {
+        const { type, src = '', title = '', orientation, poster = '' } = card.dataset;
+        modal.classList.toggle('is-portrait', orientation === 'portrait');
+        stage.innerHTML =
+          type === 'youtube'
+            ? `<iframe src="https://www.youtube-nocookie.com/embed/${esc(src)}?autoplay=1&rel=0" title="${esc(title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
+            : `<video src="${esc(src)}" poster="${esc(poster)}" controls autoplay playsinline preload="auto" title="${esc(title)}"></video>`;
+        modal.showModal();
+      });
+    });
+    document.getElementById('vmodalClose')?.addEventListener('click', close);
+    modal.addEventListener('close', () => { stage.innerHTML = ''; });
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+  }
+</script>
