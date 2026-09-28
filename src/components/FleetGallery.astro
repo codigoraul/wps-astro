@@ -1,26 +1,33 @@
 ---
+import Icon from './Icon.astro';
 import { withBase } from '@/lib/paths';
 const photos = [
-  { src: '/images/flota/flota-1.jpg', alt: 'Equipo WPS en faena de pipeline' },
-  { src: '/images/flota/flota-4.jpg', alt: 'Camión equipado WPS' },
-  { src: '/images/flota/flota-5.jpg', alt: 'Equipamiento de soldadura montado en camión' },
-  { src: '/images/flota/flota-2.jpg', alt: 'Flota de camiones WPS' },
-  { src: '/images/flota/flota-6.jpg', alt: 'Camión WPS con equipos de terreno' },
+  { src: '/images/flota/flota-1.jpg', alt: 'Camión tie-in WPS en faena de pipeline', w: 1200, h: 1600 },
+  { src: '/images/galeria/faena-03-sm.webp', alt: 'Motosoldadora Lincoln Electric montada en camión WPS', w: 600, h: 800 },
+  { src: '/images/flota/flota-4.jpg', alt: 'Camión tie-in WPS equipado', w: 1600, h: 900 },
+  { src: '/images/flota/flota-5.jpg', alt: 'Motosoldadoras montadas en camión WPS', w: 1600, h: 900 },
+  { src: '/images/galeria/faena-04-sm.webp', alt: 'Conexiones de motosoldadora Lincoln Electric en terreno', w: 600, h: 800 },
+  { src: '/images/flota/flota-2.jpg', alt: 'Flota de camiones tie-in WPS', w: 1600, h: 900 },
+  { src: '/images/flota/flota-6.jpg', alt: 'Camión WPS con equipos de soldadura', w: 1600, h: 900 },
+  { src: '/images/flota/flota-3.jpg', alt: 'Camiones WPS listos para faena', w: 1600, h: 900 },
 ];
 ---
 <section class="section fleet">
   <div class="container">
     <div class="fleet__head" data-reveal>
       <div>
-        <span class="eyebrow">Flota y equipamiento</span>
-        <h2>Equipos propios, listos para faena remota</h2>
+        <span class="eyebrow">Arriendo de equipos de soldadura</span>
+        <h2>Equipos propios de soldadura pipeline, listos para faena remota</h2>
       </div>
-      <p class="lead">Camiones equipados con maquinaria de soldadura Lincoln Electric y herramientas de terreno, para operar en zonas remotas y condiciones climáticas complejas.</p>
+      <div>
+        <p class="lead">Camiones tie-in equipados con motosoldadoras Lincoln Electric para pipelines, certificados por la marca y acreditados en minería.</p>
+        <a href={withBase('/servicios/arriendo-equipos-soldadura-pipelines/')} class="btn btn--primary">Ver servicio <Icon name="arrow" /></a>
+      </div>
     </div>
     <div class="fleet__grid">
       {photos.map((p, i) => (
-        <figure class:list={['fleet__item', { 'fleet__item--tall': i === 0 }]} data-reveal>
-          <img src={withBase(p.src)} alt={p.alt} loading="lazy" width="1600" height="900" />
+        <figure class:list={['fleet__item', { 'fleet__item--tall': i === 0, 'fleet__item--high': i === 1 }]} data-reveal>
+          <img src={withBase(p.src)} alt={p.alt} loading="lazy" decoding="async" width={p.w} height={p.h} />
         </figure>
       ))}
     </div>
@@ -29,12 +36,14 @@ const photos = [
 
 <style>
   .fleet__head { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: end; margin-bottom: 2.5rem; }
-  .fleet__head h2 { margin: 0; max-width: 20ch; }
-  .fleet__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; grid-auto-rows: 200px; }
+  .fleet__head h2 { margin: 0; max-width: 22ch; }
+  .fleet__head .lead { margin-top: 0; }
+  .fleet__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; grid-auto-rows: 200px; grid-auto-flow: dense; }
   .fleet__item { margin: 0; overflow: hidden; border-radius: var(--radius); background: var(--navy-900); }
   .fleet__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
   .fleet__item:hover img { transform: scale(1.06); }
   .fleet__item--tall { grid-row: span 2; grid-column: span 2; }
+  .fleet__item--high { grid-row: span 2; }
   @media (max-width: 900px) {
     .fleet__head { grid-template-columns: 1fr; align-items: start; }
     .fleet__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 160px; }

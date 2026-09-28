@@ -1,14 +1,13 @@
 # WPS Welding & Pipelines
 
-> WPS Welding & Pipelines (WPS Montaje Industrial) es una empresa chilena con más de 25 años de experiencia en montaje industrial, soldadura y construcción de pipelines, piping y estaciones de bombeo para los sectores de minería y energía en Chile y Perú.
+> WPS Welding & Pipelines (WPS Montaje Industrial) es una empresa chilena con más de 25 años de experiencia en arriendo de equipos de soldadura para pipelines, montaje industrial, soldadura y construcción de pipelines, piping y estaciones de bombeo para los sectores de minería y energía en Chile y Perú.
 
 ## Servicios
 
+- Arriendo de equipos de soldadura para pipelines (camiones tie-in con motosoldadoras Lincoln Electric)
 - Soldadura de pipelines y piping bajo códigos API/ASME
 - Piping y estaciones de bombeo
-- Pruebas hidrostáticas
 - Diques de poliuretano para pipelines
-- Revestimientos de tubería
 - Montaje y soldadura de estanques
 - PIGs, plugs, fittings y piezas especiales
 
@@ -22,7 +21,7 @@ Minería, energía, plantas concentradoras, plantas desaladoras, depósitos de r
 - Países de operación: Chile y Perú
 - Años de experiencia: más de 25
 - Dirección: Francia 1508, Lampa, Santiago, Chile
-- Contacto: contacto@wps.cl / +56 9 8291 0304
+- Contacto: crodriguez@wps.cl / +56 9 4554 6076
 - Sitio web: https://wps.cl
 
 ## Páginas principales
@@ -31,4 +30,5 @@ Minería, energía, plantas concentradoras, plantas desaladoras, depósitos de r
 - [Nosotros](https://wps.cl/nosotros/): historia, equipo y trayectoria de los fundadores.
 - [Servicios](https://wps.cl/servicios/): listado completo de servicios de montaje industrial.
 - [Proyectos](https://wps.cl/proyectos/): proyectos ejecutados en minería y energía.
+- [Galería](https://wps.cl/galeria/): videos y fotos de faena, camiones y equipos de soldadura.
 - [Contacto](https://wps.cl/contacto/): formulario y datos de contacto para cotizar.

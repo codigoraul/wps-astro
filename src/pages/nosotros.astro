@@ -57,12 +57,12 @@ const pillars = [
       <div data-reveal>
         <span class="eyebrow">Directorio WPS</span>
         <h2>Equipo directivo</h2>
-        <p class="lead">Ejecutivos y asesores con décadas de experiencia en pipelines, soldadura, calidad, ingeniería y operaciones.</p>
+        <p class="lead">Ejecutivos con décadas de experiencia en pipelines, soldadura, equipos y operaciones.</p>
       </div>
-      <ul class="team grid grid--3">
+      <ul class="team">
         {team.map((m) => (
           <li class="team__member" data-reveal>
-            <span class="team__avatar" aria-hidden="true">{m.name.split(' ').slice(0, 2).map((n) => n[0]).join('')}</span>
+            <span class="team__avatar" aria-hidden="true">{m.name.replace(/^Ing\.\s*/, '').split(' ').slice(0, 2).map((n) => n[0]).join('')}</span>
             <div>
               <strong>{m.name}</strong>
               <span>{m.role}</span>
@@ -70,6 +70,10 @@ const pillars = [
           </li>
         ))}
       </ul>
+      <div class="team__advisors" data-reveal>
+        <Icon name="check" />
+        <p>Asesores de ingeniería, equipos, importación de piezas especiales y equipos.</p>
+      </div>
     </div>
   </section>
 
@@ -99,7 +103,11 @@ const pillars = [
   @media (max-width: 900px) { .intro__badge { left: 1rem; } }
   .pillars { margin-top: 2.5rem; }
   .pillars__n { font-family: var(--font-display); font-size: 2.5rem; color: var(--orange-500); line-height: 1; display: block; margin-bottom: .75rem; }
-  .team { list-style: none; padding: 0; margin: 2.5rem 0 0; }
+  .team { list-style: none; padding: 0; margin: 2.5rem 0 0; max-width: 900px; display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 2vw, 1.5rem); }
+  @media (max-width: 640px) { .team { grid-template-columns: 1fr; } }
+  .team__advisors { max-width: 900px; margin: clamp(1rem, 2vw, 1.5rem) 0 0; display: flex; gap: 1rem; align-items: center; padding: 1.25rem 1.5rem; border-radius: var(--radius); background: var(--navy-900); color: #fff; }
+  .team__advisors p { margin: 0; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .06em; font-size: 1.05rem; }
+  .team__advisors :global(svg) { width: 1.5rem; height: 1.5rem; color: var(--orange-400); flex: none; }
   .team__member { display: flex; gap: 1.25rem; align-items: center; padding: 1.5rem; border: 1px solid var(--steel-300); border-radius: var(--radius); background: #fff; }
   .team__avatar { flex: none; width: 64px; height: 64px; border-radius: 50%; background: var(--navy-900); color: var(--orange-400); display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; }
   .team__member strong { display: block; color: var(--navy-900); font-size: 1.05rem; }

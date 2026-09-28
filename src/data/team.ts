@@ -1,10 +1,8 @@
 export interface Member { name: string; role: string; }
+// Orden definido por el cliente (2 columnas): Carlos | Felipe · Carmen | Pablo
 export const team: Member[] = [
-  { name: 'Carlos Rodríguez Bruna', role: 'Director Sponsor' },
-  { name: 'Pablo Ordoñez Quintana', role: 'Jefe de Operaciones' },
+  { name: 'Ing. Carlos Rodríguez Bruna', role: 'Director Sponsor' },
+  { name: 'Ing. Felipe Rodríguez Ordoñez', role: 'Inversionista - Sponsor' },
   { name: 'Carmen Ordoñez Quintana', role: 'Estudio y Ventas' },
-  { name: 'Felipe Rodríguez Ordoñez', role: 'Estudio y Ventas' },
-  { name: 'Fernando Mejías Albornoz', role: 'Asesor de Calidad, Importaciones y Piezas Especiales' },
-  { name: 'Antonio Román Reinoso', role: 'Asesor de Ingeniería, Diseño y Topografía' },
-  { name: 'Jaime Cuevas Chandía', role: 'Asesor de Pipeline, Soldadura, Curvado, Bajada, Estanques y Revestimiento' },
+  { name: 'Pablo Ordoñez Quintana', role: 'Jefe de Operaciones' },
 ];

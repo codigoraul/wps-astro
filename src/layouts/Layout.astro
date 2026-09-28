@@ -45,7 +45,7 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
         { '@type': 'Country', name: 'Chile' },
         { '@type': 'Country', name: 'Perú' },
       ],
-      knowsAbout: ['Soldadura de pipelines', 'Piping industrial', 'Estaciones de bombeo', 'Pruebas hidrostáticas', 'Revestimientos de tuberías', 'Montaje de estanques', 'Minería', 'Energía'],
+      knowsAbout: ['Soldadura de pipelines', 'Piping industrial', 'Estaciones de bombeo', 'Arriendo de equipos de soldadura', 'Diques de poliuretano', 'Montaje de estanques', 'Minería', 'Energía'],
       slogan: site.tagline,
       foundingLocation: 'Chile',
       ...(site.social.filter((s) => s.url).length > 0 ? { sameAs: site.social.filter((s) => s.url).map((s) => s.url) } : {}),

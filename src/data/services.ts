@@ -5,13 +5,35 @@ export interface Service {
   excerpt: string;
   description: string[];
   features: string[];
-  icon: 'weld' | 'pipe' | 'pressure' | 'shield' | 'coating' | 'tank' | 'fitting';
+  icon: 'weld' | 'pipe' | 'pressure' | 'shield' | 'coating' | 'tank' | 'fitting' | 'truck';
   featured?: boolean;
   image: string;
   gallery: string[];
 }
 
 export const services: Service[] = [
+  {
+    slug: 'arriendo-equipos-soldadura-pipelines',
+    image: '/images/flota/flota-1.jpg',
+    gallery: ['/images/flota/flota-1.jpg', '/images/flota/flota-4.jpg', '/images/galeria/faena-03.webp', '/images/flota/flota-5.jpg', '/images/galeria/faena-04.webp', '/images/flota/flota-2.jpg', '/images/flota/flota-6.jpg', '/images/flota/flota-3.jpg'],
+    title: 'Arriendo de Equipos de Soldadura para Pipelines',
+    shortTitle: 'Arriendo de Equipos de Soldadura',
+    excerpt:
+      'Equipos propios de soldadura para pipelines, listos para faena remota: camiones tie-in equipados con motosoldadoras Lincoln Electric.',
+    description: [
+      'Arrendamos equipos propios de soldadura para pipelines, listos para operar en faenas remotas. Nuestros camiones tie-in están equipados con motosoldadoras Lincoln Electric para pipelines, certificados por la marca y acreditados en minería.',
+      'Hemos provisto equipos para acueductos de agua de proceso y de agua recuperada, y para la soldadura de estaciones, en faenas como Minera Salvador, Minera Mantos Blancos y Minera Escondida.',
+    ],
+    features: [
+      'Camiones tie-in equipados para faena',
+      'Motosoldadoras Lincoln Electric para pipelines',
+      'Equipos certificados por la marca',
+      'Acreditados para operar en minería',
+      'Listos para faena remota',
+    ],
+    icon: 'truck',
+    featured: true,
+  },
   {
     slug: 'soldadura-pipelines',
     image: '/images/servicios/soldadura-1.jpg',
@@ -55,63 +77,24 @@ export const services: Service[] = [
     featured: true,
   },
   {
-    slug: 'pruebas-hidroestaticas',
-    image: '/images/servicios/pruebas-1.jpg',
-    gallery: ['/images/servicios/pruebas-1.jpg', '/images/servicios/pruebas-2.jpg', '/images/servicios/pruebas-3.jpg'],
-    title: 'Pruebas Hidrostáticas',
-    excerpt:
-      'Evaluación de resistencia e integridad de equipos y sistemas que trabajan a presión, con registro y certificación.',
-    description: [
-      'Las pruebas hidrostáticas evalúan la resistencia y la integridad de equipos y sistemas que operan a presión. Son el paso obligatorio antes de la puesta en servicio de cualquier pipeline o sistema de piping.',
-      'Ejecutamos llenado, presurización, estabilización, registro de presión y temperatura, y vaciado controlado, entregando un dossier de calidad completo para la aprobación del cliente.',
-    ],
-    features: [
-      'Diseño del plan de prueba por tramos',
-      'Registro continuo con manómetros y registradores calibrados',
-      'Gestión del agua de prueba y su disposición',
-      'Dossier de calidad y certificados',
-    ],
-    icon: 'pressure',
-    featured: true,
-  },
-  {
     slug: 'diques-de-poliuretano-para-los-pipelines',
     image: '/images/servicios/diques-1.jpg',
     gallery: ['/images/servicios/diques-1.jpg', '/images/servicios/diques-2.jpg', '/images/servicios/diques-3.jpg'],
-    title: 'Diques de Poliuretano y Revestimientos para Pipeline',
+    title: 'Diques de Poliuretano para Pipelines',
     shortTitle: 'Diques de Poliuretano',
     excerpt:
-      'Protección y contención para pipelines en terreno: diques de poliuretano y revestimientos de alta durabilidad.',
+      'Protección y contención para pipelines en terreno mediante diques de poliuretano de alta durabilidad.',
     description: [
-      'Los diques de poliuretano son soluciones de contención y protección instaladas a lo largo de pipelines enterrados o en superficie, evitando el desplazamiento del relleno y protegiendo el revestimiento de la tubería.',
-      'Combinamos la instalación de diques con revestimientos de protección anticorrosiva para maximizar la vida útil del pipeline en condiciones de terreno exigentes.',
+      'Los diques de poliuretano son soluciones de contención y protección instaladas a lo largo de pipelines enterrados o en superficie, evitando el desplazamiento del relleno y protegiendo la tubería.',
+      'Instalamos los diques con equipos propios, controlando su ubicación y calidad en tramos de pendiente y zonas de relleno exigentes.',
     ],
     features: [
       'Diques de poliuretano en zanja',
-      'Protección de revestimiento en tramos de pendiente',
+      'Contención del relleno en tramos de pendiente',
       'Aplicación en terreno con equipos propios',
       'Inspección y control de calidad',
     ],
     icon: 'shield',
-  },
-  {
-    slug: 'revestimientos-de-tuberia',
-    image: '/images/servicios/revestimiento-1.jpg',
-    gallery: ['/images/servicios/revestimiento-1.jpg', '/images/servicios/revestimiento-2.jpg', '/images/servicios/revestimiento-3.jpg', '/images/servicios/revestimiento-4.jpg'],
-    title: 'Revestimientos de Tubería',
-    excerpt:
-      'Revestimientos anticorrosivos y de protección mecánica para tuberías, en taller y en terreno.',
-    description: [
-      'Aplicamos revestimientos anticorrosivos y de protección mecánica para tuberías de acero, tanto en juntas de soldadura en terreno como en tramos completos.',
-      'Trabajamos con sistemas de mangas termocontraíbles, epóxicos líquidos y cintas de protección según especificación del proyecto.',
-    ],
-    features: [
-      'Revestimiento de juntas en terreno',
-      'Mangas termocontraíbles y epóxicos',
-      'Preparación de superficie según SSPC / NACE',
-      'Control de espesores y holiday detector',
-    ],
-    icon: 'coating',
   },
   {
     slug: 'montaje-y-soldadura-de-estanques',

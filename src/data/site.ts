@@ -3,13 +3,13 @@ export const site = {
   legalName: 'WPS Welding & Pipelines',
   tagline: 'Montaje Industrial · Welding & Pipelines',
   description:
-    'Construcción de pipelines, piping, estaciones de bombeo, soldadura y revestimientos para minería y energía. Más de 25 años de experiencia en Chile y el extranjero.',
+    'Arriendo de equipos de soldadura para pipelines, construcción de pipelines, piping y estaciones de bombeo para minería y energía. Más de 25 años de experiencia en Chile y el extranjero.',
   url: 'https://wps.cl',
-  email: 'contacto@wps.cl',
-  phones: ['+56 9 8291 0304', '+56 9 7897 6657'],
+  email: 'crodriguez@wps.cl',
+  phones: ['+56 9 4554 6076', '+56 9 7897 6657'],
   address: 'Francia 1508, Lampa, Santiago, Chile',
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Francia+1508+Lampa+Santiago+Chile',
-  whatsapp: '56982910304',
+  whatsapp: '56945546076',
   // Poner las URL reales cuando el cliente las entregue; con '' el icono no se muestra.
   social: [
     { name: 'Facebook', icon: 'facebook', url: '' },
