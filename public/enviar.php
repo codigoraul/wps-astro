@@ -141,24 +141,97 @@ if (preg_match('/https?:\/\//i', $nombre)) {
 // ───────── Envío ─────────
 $asunto = 'Nueva cotización web – ' . $nombre . ($servicio ? " ($servicio)" : '');
 $asuntoCod = '=?UTF-8?B?' . base64_encode($asunto) . '?=';
+$fecha = date('d-m-Y H:i');
 
-$cuerpo = "Nueva solicitud de cotización desde wps.cl\n"
-        . str_repeat('─', 44) . "\n\n"
-        . "Nombre y empresa: $nombre\n"
-        . "Email:            $email\n"
-        . "Teléfono:         " . ($telefono ?: '—') . "\n"
-        . "Servicio:         " . ($servicio ?: '—') . "\n\n"
-        . "Alcance del proyecto:\n$mensaje\n\n"
-        . str_repeat('─', 44) . "\n"
-        . 'Enviado: ' . date('d-m-Y H:i') . " · IP: $ip\n"
-        . "Responda este correo para contestarle directamente al cliente.\n";
+// Versión texto (respaldo para clientes de correo sin HTML)
+$texto = "Nueva solicitud de cotización desde wps.cl\n\n"
+       . "Nombre y empresa: $nombre\n"
+       . "Email: $email\n"
+       . "Teléfono: " . ($telefono ?: '—') . "\n"
+       . "Servicio: " . ($servicio ?: '—') . "\n\n"
+       . "Alcance del proyecto:\n$mensaje\n\n"
+       . "Enviado: $fecha · IP: $ip\n"
+       . "Responda este correo para contestarle directamente al cliente.\n";
+
+// Versión HTML
+$h = fn(string $v): string => htmlspecialchars($v, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+$telLimpio = preg_replace('/[^0-9+]/', '', $telefono) ?? '';
+$waNumero  = ltrim($telLimpio, '+');
+if ($waNumero !== '' && strlen($waNumero) === 9 && $waNumero[0] === '9') {
+    $waNumero = '56' . $waNumero;                  // celular chileno sin código de país
+}
+$telLink = $waNumero !== '' ? '+' . $waNumero : '';
+$asuntoResp = rawurlencode('Re: Cotización WPS' . ($servicio ? " – $servicio" : ''));
+
+$fila = fn(string $label, string $valor): string =>
+    '<tr><td style="padding:10px 0;border-bottom:1px solid #e6e9ef;width:150px;vertical-align:top;font-size:13px;color:#6b7280;">' . $label . '</td>'
+  . '<td style="padding:10px 0;border-bottom:1px solid #e6e9ef;vertical-align:top;font-size:15px;color:#0a1a3a;font-weight:600;">' . $valor . '</td></tr>';
+
+$boton = fn(string $href, string $texto, string $bg): string =>
+    '<a href="' . $h($href) . '" style="display:inline-block;margin:0 8px 8px 0;padding:12px 20px;background:' . $bg . ';color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;border-radius:4px;">' . $texto . '</a>';
+
+$botones = $boton("mailto:$email?subject=$asuntoResp", 'Responder por correo', '#ff4d00');
+if ($waNumero !== '') {
+    $botones .= $boton("https://wa.me/$waNumero", 'WhatsApp', '#25d366');
+}
+if ($telLimpio !== '') {
+    $botones .= $boton("tel:$telLink", 'Llamar', '#0a1a3a');
+}
+
+$html = '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' . $h($asunto) . '</title></head>'
+. '<body style="margin:0;padding:0;background:#f2f4f7;font-family:Arial,Helvetica,sans-serif;">'
+. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2f4f7;padding:24px 12px;"><tr><td align="center">'
+. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:6px;overflow:hidden;border:1px solid #e1e5ec;">'
+// Cabecera
+. '<tr><td style="background:#0a1a3a;padding:22px 28px;">'
+.   '<span style="font-size:26px;font-weight:800;color:#ff4d00;letter-spacing:1px;">WPS</span>'
+.   '<span style="font-size:12px;color:#c7cfdd;letter-spacing:2px;text-transform:uppercase;padding-left:10px;">Welding &amp; Pipelines</span>'
+. '</td></tr>'
+. '<tr><td style="height:4px;background:#ff4d00;line-height:4px;font-size:0;">&nbsp;</td></tr>'
+// Título
+. '<tr><td style="padding:28px 28px 8px;">'
+.   '<p style="margin:0 0 6px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#ff4d00;font-weight:700;">Nueva solicitud de cotización</p>'
+.   '<h1 style="margin:0;font-size:22px;line-height:1.3;color:#0a1a3a;">' . $h($nombre) . '</h1>'
+.   ($servicio ? '<p style="margin:8px 0 0;font-size:15px;color:#374151;">Interesado en: <strong>' . $h($servicio) . '</strong></p>' : '')
+. '</td></tr>'
+// Datos
+. '<tr><td style="padding:12px 28px 4px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+.   $fila('Nombre y empresa', $h($nombre))
+.   $fila('Email', '<a href="mailto:' . $h($email) . '" style="color:#0a1a3a;">' . $h($email) . '</a>')
+.   $fila('Teléfono', $telefono !== '' ? '<a href="tel:' . $h($telLink) . '" style="color:#0a1a3a;">' . $h($telefono) . '</a>' : '<span style="color:#9ca3af;font-weight:400;">No indicado</span>')
+.   $fila('Servicio', $servicio !== '' ? $h($servicio) : '<span style="color:#9ca3af;font-weight:400;">No indicado</span>')
+. '</table></td></tr>'
+// Mensaje
+. '<tr><td style="padding:20px 28px 8px;">'
+.   '<p style="margin:0 0 8px;font-size:13px;color:#6b7280;">Alcance del proyecto</p>'
+.   '<div style="background:#f6f7f9;border-left:4px solid #ff4d00;padding:16px 18px;font-size:15px;line-height:1.6;color:#1f2937;">' . nl2br($h($mensaje)) . '</div>'
+. '</td></tr>'
+// Acciones
+. '<tr><td style="padding:20px 28px 12px;">' . $botones . '</td></tr>'
+// Pie
+. '<tr><td style="padding:16px 28px 24px;border-top:1px solid #e6e9ef;font-size:12px;line-height:1.5;color:#9ca3af;">'
+.   'Enviado desde el formulario de <a href="https://wps.cl/contacto/" style="color:#9ca3af;">wps.cl</a> el ' . $h($fecha) . ' · IP ' . $h($ip) . '<br>'
+.   'Al responder este correo, la respuesta le llega directamente al cliente.'
+. '</td></tr>'
+. '</table></td></tr></table></body></html>';
+
+$limite = '=_wps_' . bin2hex(random_bytes(12));
+$cuerpo = "This is a multi-part message in MIME format.\r\n\r\n"
+        . "--$limite\r\n"
+        . "Content-Type: text/plain; charset=UTF-8\r\n"
+        . "Content-Transfer-Encoding: base64\r\n\r\n"
+        . chunk_split(base64_encode($texto)) . "\r\n"
+        . "--$limite\r\n"
+        . "Content-Type: text/html; charset=UTF-8\r\n"
+        . "Content-Transfer-Encoding: base64\r\n\r\n"
+        . chunk_split(base64_encode($html)) . "\r\n"
+        . "--$limite--\r\n";
 
 $cabeceras = array_filter([
     'From: ' . '=?UTF-8?B?' . base64_encode(NOMBRE_SITIO) . '?=' . ' <' . REMITENTE . '>',
     'Reply-To: ' . '=?UTF-8?B?' . base64_encode($nombre) . '?=' . " <$email>",
     'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
+    'Content-Type: multipart/alternative; boundary="' . $limite . '"',
     'X-Mailer: wps.cl',
     COPIA_PRUEBA !== '' ? 'Bcc: ' . COPIA_PRUEBA : '',
 ]);
