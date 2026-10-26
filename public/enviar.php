@@ -15,6 +15,7 @@ date_default_timezone_set('America/Santiago');
 
 // ───────── Configuración ─────────
 const DESTINO        = 'crodriguez@wps.cl';
+const COPIA_PRUEBA   = 'codigoraul@gmail.com';  // TEMPORAL: copia oculta para pruebas. Dejar en '' para quitarla.
 const REMITENTE      = 'no-reply@wps.cl';      // debe ser del mismo dominio para no caer en spam
 const NOMBRE_SITIO   = 'WPS Welding & Pipelines';
 const SEG_MINIMO     = 4;                      // segundos mínimos para completar el formulario
@@ -152,14 +153,15 @@ $cuerpo = "Nueva solicitud de cotización desde wps.cl\n"
         . 'Enviado: ' . date('d-m-Y H:i') . " · IP: $ip\n"
         . "Responda este correo para contestarle directamente al cliente.\n";
 
-$cabeceras = [
+$cabeceras = array_filter([
     'From: ' . '=?UTF-8?B?' . base64_encode(NOMBRE_SITIO) . '?=' . ' <' . REMITENTE . '>',
     'Reply-To: ' . '=?UTF-8?B?' . base64_encode($nombre) . '?=' . " <$email>",
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
     'Content-Transfer-Encoding: 8bit',
     'X-Mailer: wps.cl',
-];
+    COPIA_PRUEBA !== '' ? 'Bcc: ' . COPIA_PRUEBA : '',
+]);
 
 $enviado = @mail(DESTINO, $asuntoCod, $cuerpo, implode("\r\n", $cabeceras), '-f' . REMITENTE);
 
