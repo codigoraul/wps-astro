@@ -1,0 +1,56 @@
+# WPS Welding & Pipelines — sitio estático (Astro)
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Forzar https y sin www
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteRule ^(.*)$ https://wps.cl/$1 [R=301,L]
+
+# URLs del WordPress anterior -> sitio nuevo (301, conserva el posicionamiento)
+RewriteRule ^nuestros-proyectos/?$ /proyectos/ [R=301,L]
+RewriteRule ^soldadura-pipelines/?$ /servicios/soldadura-pipelines/ [R=301,L]
+RewriteRule ^piping-y-estaciones-de-bombeo/?$ /servicios/piping-y-estaciones-de-bombeo/ [R=301,L]
+RewriteRule ^diques-de-poliuretano-para-los-pipelines/?$ /servicios/diques-de-poliuretano-para-los-pipelines/ [R=301,L]
+RewriteRule ^element/montaje-y-soldadura-de-estanques/?$ /servicios/montaje-y-soldadura-de-estanques/ [R=301,L]
+RewriteRule ^element/pigs-plugs-fitting-y-piezas-especiales/?$ /servicios/pigs-plugs-fitting-y-piezas-especiales/ [R=301,L]
+RewriteRule ^(pruebas-hidroestaticas|revestimiento-de-tuberias)/?$ /servicios/ [R=301,L]
+RewriteRule ^servicios/(pruebas-hidroestaticas|revestimientos-de-tuberia)/?$ /servicios/ [R=301,L]
+
+# Sitio /prueba/ antiguo -> raíz
+RewriteRule ^prueba/(.*)$ /$1 [R=301,L]
+
+# Restos de WordPress (feeds, admin, archivos de sistema) -> inicio
+RewriteRule ^(wp-admin|wp-content|wp-includes|wp-login\.php|xmlrpc\.php|feed|comments/feed)(/.*)?$ / [R=301,L]
+</IfModule>
+
+# Compresión
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml application/manifest+json
+</IfModule>
+
+# Caché del navegador
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/webp "access plus 6 months"
+  ExpiresByType image/jpeg "access plus 6 months"
+  ExpiresByType image/png "access plus 6 months"
+  ExpiresByType image/svg+xml "access plus 6 months"
+  ExpiresByType image/x-icon "access plus 6 months"
+  ExpiresByType video/mp4 "access plus 6 months"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
