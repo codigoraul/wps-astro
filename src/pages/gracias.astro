@@ -1,0 +1,14 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Icon from '@/components/Icon.astro';
+import { withBase } from '@/lib/paths';
+---
+<Layout title="Solicitud enviada" titleTag="Solicitud enviada | WPS Welding & Pipelines" description="Recibimos su solicitud de cotización." noindex>
+  <PageHero title="¡Gracias!" lead="Recibimos su solicitud. Le responderemos dentro de 24 horas hábiles." crumbs={[{ label: 'Contacto', href: '/contacto/' }, { label: 'Solicitud enviada' }]} />
+  <section class="section">
+    <div class="container" style="text-align:center">
+      <a href={withBase('/')} class="btn btn--primary">Volver al inicio <Icon name="arrow" /></a>
+    </div>
+  </section>
+</Layout>

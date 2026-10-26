@@ -20,10 +20,10 @@ const services = await getServices();
         </ul>
       </div>
 
-      <form class="contact__form card" data-reveal action="https://formsubmit.co/crodriguez@wps.cl" method="POST">
-        <input type="hidden" name="_subject" value="Nueva cotización desde wps.cl" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+      <form class="contact__form card" id="contactForm" data-reveal action="/enviar.php" method="POST">
+        <!-- Anti-spam: campo trampa (invisible para personas) y hora de carga del formulario -->
+        <div class="hp" aria-hidden="true"><label for="website">No completar</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
+        <input type="hidden" name="fs" id="fs" value="" />
         <div class="form__head">
           <span class="eyebrow">Formulario de contacto</span>
           <h3>Solicite una cotización</h3>
@@ -42,7 +42,8 @@ const services = await getServices();
           </select>
         </div>
         <div class="field"><label for="mensaje">Alcance del proyecto</label><textarea id="mensaje" name="mensaje" rows="5" required placeholder="Ubicación, plazo estimado, metros lineales, diámetros, normas aplicables…"></textarea></div>
-        <button type="submit" class="btn btn--primary">Enviar solicitud <Icon name="arrow" /></button>
+        <button type="submit" class="btn btn--primary" id="formBtn">Enviar solicitud <Icon name="arrow" /></button>
+        <p class="form__status" id="formStatus" role="status" aria-live="polite" hidden></p>
         <p class="form__note">Sus datos se usan solo para responder su solicitud.</p>
       </form>
     </div>
@@ -70,6 +71,47 @@ const services = await getServices();
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--orange-500); box-shadow: 0 0 0 3px rgba(255,77,0,.15); }
   textarea { resize: vertical; }
   .form__note { font-size: .8rem; color: var(--fg-muted); margin-top: 1rem; }
+  .hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .contact__form { position: relative; }
+  .form__status { margin: 1rem 0 0; padding: .9rem 1rem; border-radius: var(--radius); font-size: .95rem; font-weight: 500; }
+  .form__status.is-ok { background: #e8f6ee; color: #11643a; border-left: 3px solid #1f9d55; }
+  .form__status.is-error { background: #fdecec; color: #9b1c1c; border-left: 3px solid #d64545; }
+  #formBtn[disabled] { opacity: .65; cursor: wait; }
   .map iframe { width: 100%; height: 420px; border: 0; display: block; filter: grayscale(.4); }
   @media (max-width: 900px) { .contact { grid-template-columns: 1fr; gap: 2.5rem; } .field-row { grid-template-columns: 1fr; } }
 </style>
+
+<script>
+  const form = document.getElementById('contactForm') as HTMLFormElement | null;
+  const status = document.getElementById('formStatus') as HTMLParagraphElement | null;
+  const btn = document.getElementById('formBtn') as HTMLButtonElement | null;
+  const fs = document.getElementById('fs') as HTMLInputElement | null;
+  if (fs) fs.value = String(Date.now());
+
+  const show = (ok: boolean, msg: string) => {
+    if (!status) return;
+    status.hidden = false;
+    status.textContent = msg;
+    status.className = 'form__status ' + (ok ? 'is-ok' : 'is-error');
+  };
+
+  if (new URLSearchParams(location.search).get('error') === '1') {
+    show(false, 'No pudimos enviar su solicitud. Revise los datos e intente nuevamente, o escríbanos por WhatsApp.');
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    btn && (btn.disabled = true);
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      const data = await res.json().catch(() => ({ ok: false, message: 'Error inesperado. Intente nuevamente.' }));
+      show(Boolean(data.ok), data.message);
+      if (data.ok) { form.reset(); if (fs) fs.value = String(Date.now()); }
+    } catch {
+      show(false, 'Sin conexión. Revise su internet e intente nuevamente.');
+    } finally {
+      btn && (btn.disabled = false);
+    }
+  });
+</script>

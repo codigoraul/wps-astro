@@ -6,8 +6,8 @@ import Icon from '@/components/Icon.astro';
 import { site } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
-interface Props { title: string; description?: string; ogImage?: string; titleTag?: string; }
-const { title, description = site.description, ogImage = '/images/logo-wps.jpg', titleTag } = Astro.props;
+interface Props { title: string; description?: string; ogImage?: string; titleTag?: string; noindex?: boolean; }
+const { title, description = site.description, ogImage = '/images/logo-wps.jpg', titleTag, noindex = false } = Astro.props;
 const fullTitle = titleTag ?? (title === 'Inicio' ? `${site.legalName} · Montaje Industrial` : `${title} · ${site.name}`);
 const canonical = new URL(Astro.url.pathname, site.url).href;
 ---
@@ -19,6 +19,7 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
